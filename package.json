@@ -6,4 +6,9 @@
   "repository": "https://github.com/IchiyaLuna/one-ev-api-Express.js.git",
   "author": "Ichiya Luna <ichiyaluna@mail.lunabi.co.kr>",
   "license": "MIT",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mysql": "^2.18.1"
+  }
 }
