@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "RESTful API for ONE-EV",
   "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
   "repository": "https://github.com/IchiyaLuna/one-ev-api-Express.js.git",
   "author": "Ichiya Luna <ichiyaluna@mail.lunabi.co.kr>",
   "license": "MIT",
