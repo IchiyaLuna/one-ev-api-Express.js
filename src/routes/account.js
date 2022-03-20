@@ -51,6 +51,7 @@ router.get("/", (req, res) => {
       }
     });
     con.release();
+    console.log("DB pool released");
   });
 });
 
