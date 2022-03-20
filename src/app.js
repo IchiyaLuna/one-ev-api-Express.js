@@ -7,10 +7,13 @@ const indexRouter = require("./routes/index");
 const accountRouter = require("./routes/account");
 const academyRouter = require("./routes/academy");
 
+//morgan-logger
+const logger = require("morgan");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(logger("dev"));
 
 app.use("/", indexRouter);
 app.use("/account", accountRouter);
