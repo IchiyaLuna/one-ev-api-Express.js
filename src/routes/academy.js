@@ -6,7 +6,7 @@ const router = express.Router();
 const dbModule = require("../db");
 const pool = dbModule.init();
 
-router.get("/academy", (req, res) => {
+router.get("/", (req, res) => {
   const api_key = req.query.key;
 
   dbModule.open(pool, (con) => {
@@ -14,9 +14,9 @@ router.get("/academy", (req, res) => {
   });
 });
 
-router.post("/academy", (req, res) => {});
+router.post("/", (req, res) => {});
 
-router.get("/academy/code/check", (req, res) => {
+router.get("/code/check", (req, res) => {
   const code = req.query.code;
   dbModule.open(pool, (con) => {
     con.query("SELECT code FROM academy WHERE code=?", [code], function (err, result) {
