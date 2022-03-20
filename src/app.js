@@ -4,6 +4,7 @@ const app = express();
 
 //express-router
 const accountRouter = require("./routes/account");
+const academyRouter = require("./routes/academy");
 
 //db module
 const dbModule = require("./db");
@@ -30,5 +31,6 @@ app.get("/", (req, res) => {
 });
 
 app.use("/account", accountRouter);
+app.use("/academy", academyRouter);
 
 app.listen(3000, () => console.log("IL!"));
