@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 
 //express-router
-const router = express.Router();
 const indexRouter = require("./routes/index");
 
 app.use(express.json());
