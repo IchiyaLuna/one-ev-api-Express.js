@@ -50,8 +50,7 @@ router.get("/", (req, res) => {
         });
       }
     });
-    con.release();
-    console.log("DB pool released");
+    dbModule.close(con);
   });
 });
 
@@ -109,8 +108,7 @@ router.post("/", (req, res) => {
         });
       }
     });
-    con.release();
-    console.log("DB pool released");
+    dbModule.close(con);
   });
 });
 

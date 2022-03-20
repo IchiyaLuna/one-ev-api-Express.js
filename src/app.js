@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
         });
       }
     });
-    con.release();
+    dbModule.close(con);
   });
 });
 

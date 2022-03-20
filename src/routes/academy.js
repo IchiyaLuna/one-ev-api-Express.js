@@ -37,8 +37,7 @@ router.get("/academy/code/check", (req, res) => {
         });
       }
     });
-    con.release();
-    console.log("DB pool released");
+    dbModule.close(con);
   });
 });
 

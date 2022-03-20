@@ -26,10 +26,8 @@ const connection = {
   },
 
   close: function (con) {
-    con.end((err) => {
-      if (err) console.log("DB termination failed: ", err);
-      else console.log("Connection terminated");
-    });
+    con.release();
+    console.log("DB pool released");
   },
 };
 
