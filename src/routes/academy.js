@@ -30,6 +30,7 @@ router.post("/create", (req, res) => {
         return;
       } else if (!result.length) {
         console.log(result);
+        return;
       }
     });
   });
