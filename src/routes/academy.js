@@ -10,7 +10,7 @@ router.get("/", (req, res) => {
   const api_key = req.query.key;
 
   dbModule.open(pool, (con) => {
-    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+    con.query("SELECT * FROM academy WHERE api_key=?", [api_key], function (err, result) {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
@@ -23,6 +23,9 @@ router.get("/", (req, res) => {
           ok: true,
           data: {
             academy_id: result[0].id,
+            name: result[0].name,
+            tel: result[0].tel,
+            address: result[0].address,
           },
         });
       }
