@@ -19,7 +19,21 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {});
+router.post("/create", (req, res) => {
+  const api_key = req.query.key;
+
+  dbModule.open(pool, (con) => {
+    con.query("SELECT academy_index FROM db_config", function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+        return;
+      } else if (!result.length) {
+        console.log(result);
+      }
+    });
+  });
+});
 
 router.get("/code/check", (req, res) => {
   const code = req.query.code;
