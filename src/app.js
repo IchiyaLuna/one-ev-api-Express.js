@@ -6,6 +6,7 @@ const app = express();
 const indexRouter = require("./routes/index");
 const accountRouter = require("./routes/account");
 const academyRouter = require("./routes/academy");
+const hallRouter = require("./routes/hall");
 
 //morgan-logger
 const logger = require("morgan");
@@ -18,5 +19,6 @@ app.use(logger("dev"));
 app.use("/", indexRouter);
 app.use("/account", accountRouter);
 app.use("/academy", academyRouter);
+app.use("/hall", hallRouter);
 
 app.listen(3000, () => console.log("IL!"));
