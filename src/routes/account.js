@@ -54,7 +54,7 @@ router.get("/", (req, res) => {
   });
 });
 
-router.post("/", (req, res) => {
+router.post("/register", (req, res) => {
   const id = req.query.id;
   const pass = req.query.pass;
 
@@ -111,5 +111,63 @@ router.post("/", (req, res) => {
     dbModule.close(con);
   });
 });
+
+router.delete("/delete", (req, res) => {
+  const id = req.query.id;
+  const pass = req.query.pass;
+
+  dbModule.open(pool, (con) => {
+    con.query("SELECT * FROM token WHERE id=?", [id], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+        return;
+      } else if (result.length) {
+        res.status(409).json({ message: "Already exist" });
+        return;
+      } else {
+        const salt = crypto.createHash("sha512").update(crypto.randomBytes(20).toString("base64")).digest("hex");
+
+        const hash = crypto
+          .createHash("sha512")
+          .update(pass + salt)
+          .digest("hex");
+
+        let api_key = crypto.createHash("sha512").update(crypto.randomBytes(20).toString("base64")).digest("hex").slice(-32);
+
+        con.query("SELECT api_key FROM token WHERE api_key=?", [api_key], function (err, result) {
+          if (err) {
+            console.log("DB communication failed: ", err);
+            res.status(500).json({ message: "DB communication failed" });
+            return;
+          } else if (result.length) api_key = crypto.createHash("sha512").update(crypto.randomBytes(20).toString("base64")).digest("hex").slice(-32);
+
+          con.query("INSERT INTO token (id, api_key, hash, salt) VALUES (?, ?, ?, ?)", [id, api_key, hash, salt], function (err, result) {
+            if (err) {
+              console.log("DB communication failed: ", err);
+              res.status(500).json({ message: "DB communication failed" });
+              return;
+            } else {
+              res.json({
+                ok: true,
+                api: {
+                  key: api_key,
+                  key_length: api_key.length.toString(),
+                },
+                account: {
+                  id: id,
+                  pass: hash,
+                  salt: salt,
+                },
+              });
+              return;
+            }
+          });
+        });
+      }
+    });
+    dbModule.close(con);
+  });
+})
 
 module.exports = router;
