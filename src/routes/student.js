@@ -85,7 +85,7 @@ router.post("/", (req, res) => {
             let id = result[0].student_index + 1;
             // Insert stu
             con.query(
-              "INSERT INTO student (id, api_key, name, phone, last_consult) VALUES(?, ?, ?, ?, ?)",
+              "INSERT INTO student (id, academy_id, name, phone, last_consult) VALUES(?, ?, ?, ?, ?)",
               [id, academy_id, name, phone, lastConsult],
               function (err, result) {
                 if (err) {
