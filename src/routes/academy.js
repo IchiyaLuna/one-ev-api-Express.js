@@ -21,12 +21,10 @@ router.get("/", (req, res) => {
       } else {
         res.json({
           ok: true,
-          data: {
-            academy_id: result[0].id,
-            name: result[0].name,
-            tel: result[0].tel,
-            address: result[0].address,
-          },
+          academy_id: result[0].id,
+          name: result[0].name,
+          tel: result[0].tel,
+          address: result[0].address,
         });
       }
     });
