@@ -8,12 +8,16 @@ const accountRouter = require("./routes/account");
 const academyRouter = require("./routes/academy");
 const hallRouter = require("./routes/hall");
 
+//cors
+const cors = require("cors");
+
 //morgan-logger
 const logger = require("morgan");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(cors());
 app.use(logger("dev"));
 
 app.use("/", indexRouter);
