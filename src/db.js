@@ -21,6 +21,7 @@ const connection = {
       if (!err) {
         console.log("Connected to DB pool");
         callback(con);
+        con.release();
       } else console.log("DB connection failed: ", err);
     });
   },
