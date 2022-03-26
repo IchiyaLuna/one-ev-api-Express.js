@@ -54,4 +54,72 @@ router.get("/", (req, res) => {
   });
 });
 
+router.post("/", (req, res) => {
+  const api_key = req.query.key;
+  const hall_id = req.query.hall_id;
+  const name = req.query.name;
+
+  console.log(api_key);
+  dbModule.open(pool, (con) => {
+    // Get aca id
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+        return;
+      } else if (!result.length) {
+        res.status(404).json({ message: "No accademy found" });
+        return;
+      } else {
+        let academy_id = result[0].id;
+        // Get cur stu_index
+        con.query("SELECT room_index FROM db_config", function (err, result) {
+          if (err) {
+            console.log("DB communication failed: ", err);
+            res.status(500).json({ message: "DB communication failed" });
+            return;
+          } else if (!result.length) {
+            res.status(404).json({ message: "DB not correctly set" });
+            return;
+          } else {
+            let id = result[0].room_index + 1;
+            // Insert stu
+            con.query(
+              "INSERT INTO room (id, academy_id, hall_id, name) VALUES(?, ?, ?, ?)",
+              [id, academy_id, hall_id, name],
+              function (err, result) {
+                if (err) {
+                  console.log("DB communication failed: ", err);
+                  res.status(500).json({ message: "DB communication failed" });
+                  return;
+                } else {
+                  // Update stu_index
+                  con.query("UPDATE db_config SET room_index=?", id, function (err, result) {
+                    if (err) {
+                      console.log("DB communication failed: ", err);
+                      res.status(500).json({ message: "DB communication failed" });
+                      return;
+                    } else {
+                      res.json({
+                        ok: true,
+                        message: "",
+                        room: {
+                          id: id,
+                          academy_id: academy_id,
+                          hall_id: hall_id,
+                          name: name,
+                        },
+                      });
+                    }
+                  });
+                }
+              }
+            );
+          }
+        });
+      }
+    });
+  });
+});
+
 module.exports = router;
