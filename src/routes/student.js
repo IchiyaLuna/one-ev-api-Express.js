@@ -108,7 +108,7 @@ router.post("/", (req, res) => {
                       res.json({
                         ok: true,
                         message: "",
-                        data: {
+                        student: {
                           id: id,
                           academy_id: academy_id,
                           name: name,
@@ -125,6 +125,56 @@ router.post("/", (req, res) => {
             );
           }
         });
+      }
+    });
+  });
+});
+
+router.put("/", (req, res) => {
+  const api_key = req.query.key;
+  const id = req.query.id;
+  const name = req.query.name;
+  const gender = req.query.gender;
+  const studentPhone = req.query.student_phone;
+  const parentPhone = req.query.parent_phone;
+  const lastConsult = req.query.last_consult;
+
+  dbModule.open(pool, (con) => {
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+        return;
+      } else if (!result.length) {
+        res.status(404).json({ message: "No accademy found" });
+        return;
+      } else {
+        let academy_id = result[0].id;
+        con.query(
+          "UPDATE student SET name=?, gender=?, student_phone=?, parent_phone=?, last_consult=? WHERE academy_id=? AND id=?",
+          [name, gender, studentPhone, parentPhone, lastConsult, academy_id, id],
+          function (err, result) {
+            if (err) {
+              console.log("DB communication failed: ", err);
+              res.status(500).json({ message: "DB communication failed" });
+              return;
+            } else {
+              res.json({
+                ok: true,
+                message: "Student updated",
+                student: {
+                  id: id,
+                  academy_id: academy_id,
+                  name: name,
+                  gender: gender,
+                  student_phone: studentPhone,
+                  parent_phone: parentPhone,
+                  last_consult: lastConsult,
+                },
+              });
+            }
+          }
+        );
       }
     });
   });
