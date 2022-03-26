@@ -41,6 +41,7 @@ router.get("/", (req, res) => {
                 gender: student.gender,
                 student_phone: student.student_phone,
                 parent_phone: student.parent_phone,
+                school: student.school,
                 last_consult: student.last_consult,
               });
             }
@@ -62,6 +63,7 @@ router.post("/", (req, res) => {
   const gender = req.query.gender;
   const studentPhone = req.query.student_phone;
   const parentPhone = req.query.parent_phone;
+  const school = req.query.school;
   const lastConsult = req.query.last_consult;
 
   console.log(api_key);
@@ -90,8 +92,8 @@ router.post("/", (req, res) => {
             let id = result[0].student_index + 1;
             // Insert stu
             con.query(
-              "INSERT INTO student (id, academy_id, name, gender, student_phone, parent_phone, last_consult) VALUES(?, ?, ?, ?, ?, ?, ?)",
-              [id, academy_id, name, gender, studentPhone, parentPhone, lastConsult],
+              "INSERT INTO student (id, academy_id, name, gender, student_phone, parent_phone, school, last_consult) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+              [id, academy_id, name, gender, studentPhone, parentPhone, school, lastConsult],
               function (err, result) {
                 if (err) {
                   console.log("DB communication failed: ", err);
@@ -137,6 +139,7 @@ router.put("/", (req, res) => {
   const gender = req.query.gender;
   const studentPhone = req.query.student_phone;
   const parentPhone = req.query.parent_phone;
+  const school = req.query.school;
   const lastConsult = req.query.last_consult;
 
   dbModule.open(pool, (con) => {
@@ -151,8 +154,8 @@ router.put("/", (req, res) => {
       } else {
         let academy_id = result[0].id;
         con.query(
-          "UPDATE student SET name=?, gender=?, student_phone=?, parent_phone=?, last_consult=? WHERE academy_id=? AND id=?",
-          [name, gender, studentPhone, parentPhone, lastConsult, academy_id, id],
+          "UPDATE student SET name=?, gender=?, student_phone=?, parent_phone=?, school=?, last_consult=? WHERE academy_id=? AND id=?",
+          [name, gender, studentPhone, parentPhone, school, lastConsult, academy_id, id],
           function (err, result) {
             if (err) {
               console.log("DB communication failed: ", err);
