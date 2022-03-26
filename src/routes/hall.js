@@ -10,32 +10,46 @@ const dbModule = require("../db");
 const pool = dbModule.init();
 
 router.get("/", (req, res) => {
-  const academy_id = req.query.academy_id;
+  const api_key = req.query.key;
 
   dbModule.open(pool, (con) => {
-    con.query("SELECT id, name FROM hall WHERE academy_id=?", [academy_id], function (err, result) {
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
+        return;
       } else if (!result.length) {
-        res.status(404).json({ message: "No hall data found" });
+        res.status(404).json({ message: "No accademy found" });
+        return;
       } else {
-        const data = [];
+        let academy_id = result[0].id;
+        dbModule.open(pool, (con) => {
+          con.query("SELECT id, name FROM hall WHERE academy_id=?", [academy_id], function (err, result) {
+            if (err) {
+              console.log("DB communication failed: ", err);
+              res.status(500).json({ message: "DB communication failed" });
+            } else if (!result.length) {
+              res.status(404).json({ message: "No hall data found" });
+            } else {
+              const data = [];
 
-        for (const hall of result) {
-          data.push({
-            id: hall.id,
-            name: hall.name,
+              for (const hall of result) {
+                data.push({
+                  id: hall.id,
+                  name: hall.name,
+                });
+              }
+
+              res.json({
+                ok: true,
+                hall: data,
+              });
+            }
           });
-        }
-
-        res.json({
-          ok: true,
-          hall: data,
+          dbModule.close(con);
         });
       }
     });
-    dbModule.close(con);
   });
 });
 
