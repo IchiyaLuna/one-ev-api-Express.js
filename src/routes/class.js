@@ -11,7 +11,7 @@ const pool = dbModule.init();
 
 router.post("/", (req, res) => {
   const api_key = req.query.key;
-  const hall_id = req.query.hall_id;
+  const room_id = req.query.room_id;
   const name = req.query.name;
   const subject_id = req.query.subject_id;
   const teacher_id = req.query.teacher_id;
@@ -40,8 +40,8 @@ router.post("/", (req, res) => {
             let id = result[0].class_index + 1;
             // Insert stu
             con.query(
-              "INSERT INTO class (id, academy_id, hall_id, name, subject_id, teacher_id, full_student, time) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-              [id, academy_id, hall_id, name, subject_id, teacher_id, full_student, time],
+              "INSERT INTO class (id, academy_id, room_id, name, subject_id, teacher_id, full_student, time) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+              [id, academy_id, room_id, name, subject_id, teacher_id, full_student, time],
               function (err, result) {
                 if (err) {
                   console.log("DB communication failed: ", err);
@@ -59,7 +59,7 @@ router.post("/", (req, res) => {
                         class: {
                           id: id,
                           academy_id: academy_id,
-                          hall_id: hall_id,
+                          room_id: room_id,
                           name: name,
                           subject_id: subject_id,
                           teacher_id: teacher_id,
@@ -104,10 +104,56 @@ router.get("/subject", (req, res) => {
             for (const classData of result) {
               data.push({
                 id: classData.id,
-                hall_id: classData.hall_id,
+                room_id: classData.room_id,
                 name: classData.name,
                 subject_id: classData.subject_id,
                 teacher_id: classData.teacher_id,
+                full_student: classData.full_student,
+                time: classData.time,
+              });
+            }
+
+            res.json({
+              ok: true,
+              class: data,
+            });
+          }
+        });
+      }
+    });
+  });
+});
+
+router.get("/teacher", (req, res) => {
+  const api_key = req.query.key;
+  const teacher_id = req.query.teacher_id;
+
+  dbModule.open(pool, (con) => {
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+      } else if (!result.length) {
+        res.status(404).json({ message: "No accademy found" });
+      } else {
+        let academy_id = result[0].id;
+        con.query("SELECT * FROM class WHERE academy_id=? AND teacher_id=?", [academy_id, teacher_id], function (err, result) {
+          if (err) {
+            console.log("DB communication failed: ", err);
+            res.status(500).json({ message: "DB communication failed" });
+          } else if (!result.length) {
+            res.status(404).json({ message: "No class found" });
+          } else {
+            const data = [];
+
+            for (const classData of result) {
+              data.push({
+                id: classData.id,
+                room_id: classData.room_id,
+                name: classData.name,
+                subject_id: classData.subject_id,
+                teacher_id: classData.teacher_id,
+                full_student: classData.full_student,
                 time: classData.time,
               });
             }
