@@ -64,6 +64,7 @@ router.post("/", (req, res) => {
   const parentPhone = req.query.parent_phone;
   const lastConsult = req.query.last_consult;
 
+  console.log(api_key);
   dbModule.open(pool, (con) => {
     // Get aca id
     con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
