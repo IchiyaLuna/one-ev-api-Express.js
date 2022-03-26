@@ -106,6 +106,48 @@ router.post("/", (req, res) => {
   });
 });
 
+router.get("/id", (req, res) => {
+  const api_key = req.query.key;
+  const hall_id = req.query.hall_id;
+
+  dbModule.open(pool, (con) => {
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+      } else if (!result.length) {
+        res.status(404).json({ message: "No accademy found" });
+      } else {
+        let academy_id = result[0].id;
+        dbModule.open(pool, (con) => {
+          con.query("SELECT * FROM hall WHERE academy_id=? AND id=?", [academy_id], function (err, result) {
+            if (err) {
+              console.log("DB communication failed: ", err);
+              res.status(500).json({ message: "DB communication failed" });
+            } else if (!result.length) {
+              res.status(404).json({ message: "No hall data found" });
+            } else {
+              const data = [];
+
+              for (const hall of result) {
+                data.push({
+                  id: hall.id,
+                  name: hall.name,
+                });
+              }
+
+              res.json({
+                ok: true,
+                hall: data,
+              });
+            }
+          });
+        });
+      }
+    });
+  });
+});
+
 router.get("/check", (req, res) => {});
 
 module.exports = router;
