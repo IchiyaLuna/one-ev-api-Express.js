@@ -130,4 +130,36 @@ router.post("/", (req, res) => {
   });
 });
 
+router.delete("/", (req, res) => {
+  const api_key = req.query.key;
+  const id = req.query.id;
+
+  dbModule.open(pool, (con) => {
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+        return;
+      } else if (!result.length) {
+        res.status(404).json({ message: "No accademy found" });
+        return;
+      } else {
+        let academy_id = result[0].id;
+        con.query("DELETE FROM student WHERE academy_id=? AND id=?", [academy_id, id], function (err, result) {
+          if (err) {
+            console.log("DB communication failed: ", err);
+            res.status(500).json({ message: "DB communication failed" });
+            return;
+          } else {
+            res.json({
+              ok: true,
+              message: "Student deleted",
+            });
+          }
+        });
+      }
+    });
+  });
+});
+
 module.exports = router;
