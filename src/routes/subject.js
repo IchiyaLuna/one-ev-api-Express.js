@@ -34,7 +34,6 @@ router.get("/", (req, res) => {
               data.push({
                 id: subject.id,
                 name: subject.name,
-                class_count: subject.class_count,
               });
             }
 
