@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
 
         res.json({
           ok: true,
-          data: data,
+          hall: data,
         });
       }
     });
