@@ -22,7 +22,7 @@ router.get("/", (req, res) => {
       } else {
         let academy_id = result[0].id;
         dbModule.open(pool, (con) => {
-          con.query("SELECT id, name FROM room WHERE academy_id=?", [academy_id], function (err, result) {
+          con.query("SELECT * FROM room WHERE academy_id=?", [academy_id], function (err, result) {
             if (err) {
               console.log("DB communication failed: ", err);
               res.status(500).json({ message: "DB communication failed" });
@@ -34,6 +34,7 @@ router.get("/", (req, res) => {
               for (const room of result) {
                 data.push({
                   id: room.id,
+                  hall_id: room.hall_id,
                   name: room.name,
                 });
               }
