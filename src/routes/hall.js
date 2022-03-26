@@ -120,7 +120,7 @@ router.get("/id", (req, res) => {
       } else {
         let academy_id = result[0].id;
         dbModule.open(pool, (con) => {
-          con.query("SELECT * FROM hall WHERE academy_id=? AND id=?", [academy_id], function (err, result) {
+          con.query("SELECT * FROM hall WHERE academy_id=? AND id=?", [academy_id, hall_id], function (err, result) {
             if (err) {
               console.log("DB communication failed: ", err);
               res.status(500).json({ message: "DB communication failed" });
