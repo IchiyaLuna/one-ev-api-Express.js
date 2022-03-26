@@ -29,7 +29,7 @@ router.get("/", (req, res) => {
             res.status(500).json({ message: "DB communication failed" });
             return;
           } else if (!result.length) {
-            res.status(404).json({ message: "No student found" });
+            res.status(404).json({ message: "No subject found" });
             return;
           } else {
             const data = [];
@@ -38,6 +38,7 @@ router.get("/", (req, res) => {
               data.push({
                 id: subject.id,
                 name: subject.name,
+                class_count: subject.class_count,
               });
             }
 
