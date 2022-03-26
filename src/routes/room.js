@@ -71,7 +71,7 @@ router.post("/", (req, res) => {
         return;
       } else {
         let academy_id = result[0].id;
-        // Get cur stu_index
+
         con.query("SELECT room_index FROM db_config", function (err, result) {
           if (err) {
             console.log("DB communication failed: ", err);
@@ -82,7 +82,7 @@ router.post("/", (req, res) => {
             return;
           } else {
             let id = result[0].room_index + 1;
-            // Insert stu
+
             con.query(
               "INSERT INTO room (id, academy_id, hall_id, name) VALUES(?, ?, ?, ?)",
               [id, academy_id, hall_id, name],
@@ -101,7 +101,6 @@ router.post("/", (req, res) => {
                     } else {
                       res.json({
                         ok: true,
-                        message: "",
                         room: {
                           id: id,
                           academy_id: academy_id,
