@@ -50,6 +50,7 @@ router.get("/", (req, res) => {
         });
       }
     });
+    dbModule.close(con);
   });
 });
 
@@ -113,7 +114,9 @@ router.post("/", (req, res) => {
       }
     });
   });
+  dbModule.close(con);
 });
 
 router.get("/check", (req, res) => {});
+
 module.exports = router;

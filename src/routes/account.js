@@ -168,6 +168,6 @@ router.delete("/delete", (req, res) => {
     });
     dbModule.close(con);
   });
-})
+});
 
 module.exports = router;

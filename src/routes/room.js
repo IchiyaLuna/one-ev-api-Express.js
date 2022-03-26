@@ -47,10 +47,10 @@ router.get("/", (req, res) => {
               });
             }
           });
-          dbModule.close(con);
         });
       }
     });
+    dbModule.close(con);
   });
 });
 
@@ -117,6 +117,7 @@ router.post("/", (req, res) => {
         });
       }
     });
+    dbModule.close(con);
   });
 });
 

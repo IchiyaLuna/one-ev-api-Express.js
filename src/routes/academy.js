@@ -28,6 +28,7 @@ router.get("/", (req, res) => {
         });
       }
     });
+    dbModule.close(con);
   });
 });
 
@@ -81,6 +82,7 @@ router.post("/create", (req, res) => {
         );
       }
     });
+    dbModule.close(con);
   });
 });
 
