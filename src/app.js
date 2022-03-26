@@ -26,7 +26,7 @@ app.use(logger("dev"));
 app.use("/", indexRouter);
 app.use("/account", accountRouter);
 app.use("/academy", academyRouter);
-app.use("/classRouter", classRouter);
+app.use("/class", classRouter);
 app.use("/hall", hallRouter);
 app.use("/student", studentRouter);
 app.use("/subject", subjectRouter);
