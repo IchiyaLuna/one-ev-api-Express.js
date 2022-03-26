@@ -26,7 +26,7 @@ router.get("/", (req, res) => {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
           } else if (!result.length) {
-            res.status(404).json({ message: "No student found" });
+            res.status(404).json({ message: "No teacher found" });
           } else {
             const data = [];
 
