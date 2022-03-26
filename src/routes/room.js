@@ -12,8 +12,7 @@ const pool = dbModule.init();
 router.get("/", (req, res) => {
   const api_key = req.query.key;
   const hall_id = req.query.hall_id;
-  console.log(api_key);
-  console.log(hall_id);
+
   dbModule.open(pool, (con) => {
     con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
       if (err) {
@@ -60,7 +59,6 @@ router.post("/", (req, res) => {
   const hall_id = req.query.hall_id;
   const name = req.query.name;
 
-  console.log(api_key);
   dbModule.open(pool, (con) => {
     // Get aca id
     con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
