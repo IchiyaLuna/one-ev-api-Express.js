@@ -9,6 +9,77 @@ const crypto = require("crypto");
 const dbModule = require("../db");
 const pool = dbModule.init();
 
+router.post("/", (req, res) => {
+  const api_key = req.query.key;
+  const hall_id = req.query.hall_id;
+  const name = req.query.name;
+  const subject_id = req.query.subject_id;
+  const teacher_id = req.query.teacher_id;
+  const full_student = req.query.full_student;
+  const time = req.query.time;
+
+  console.log(api_key);
+  dbModule.open(pool, (con) => {
+    // Get aca id
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+      } else if (!result.length) {
+        res.status(404).json({ message: "No accademy found" });
+      } else {
+        let academy_id = result[0].id;
+        // Get cur stu_index
+        con.query("SELECT class_index FROM db_config", function (err, result) {
+          if (err) {
+            console.log("DB communication failed: ", err);
+            res.status(500).json({ message: "DB communication failed" });
+          } else if (!result.length) {
+            res.status(404).json({ message: "DB not correctly set" });
+          } else {
+            let id = result[0].class_index + 1;
+            // Insert stu
+            con.query(
+              "INSERT INTO class (id, academy_id, hall_id, name, subject_id, teacher_id, full_student, time) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+              [id, academy_id, hall_id, name, subject_id, teacher_id, full_student, time],
+              function (err, result) {
+                if (err) {
+                  console.log("DB communication failed: ", err);
+                  res.status(500).json({ message: "DB communication failed" });
+                } else {
+                  // Update stu_index
+                  con.query("UPDATE db_config SET class_index=?", id, function (err, result) {
+                    if (err) {
+                      console.log("DB communication failed: ", err);
+                      res.status(500).json({ message: "DB communication failed" });
+                    } else {
+                      res.json({
+                        ok: true,
+                        message: "",
+                        class: {
+                          id: id,
+                          academy_id: academy_id,
+                          hall_id: hall_id,
+                          name: name,
+                          subject_id: subject_id,
+                          teacher_id: teacher_id,
+                          full_student: full_student,
+                          time: time,
+                        },
+                      });
+                    }
+                  });
+                }
+              }
+            );
+          }
+          dbModule.close(con);
+        });
+      }
+    });
+  });
+});
+
 router.get("/subject", (req, res) => {
   const api_key = req.query.key;
   const subject_id = req.query.subject_id;
@@ -18,20 +89,16 @@ router.get("/subject", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No accademy found" });
-        return;
       } else {
         let academy_id = result[0].id;
         con.query("SELECT * FROM class WHERE academy_id=? AND subject_id=?", [academy_id, subject_id], function (err, result) {
           if (err) {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
-            return;
           } else if (!result.length) {
             res.status(404).json({ message: "No class found" });
-            return;
           } else {
             const data = [];
 
@@ -53,6 +120,7 @@ router.get("/subject", (req, res) => {
           }
         });
       }
+      dbModule.close(con);
     });
   });
 });

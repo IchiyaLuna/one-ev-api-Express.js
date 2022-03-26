@@ -18,10 +18,8 @@ router.get("/", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No accademy found" });
-        return;
       } else {
         let academy_id = result[0].id;
         dbModule.open(pool, (con) => {
@@ -49,8 +47,8 @@ router.get("/", (req, res) => {
           });
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 
@@ -65,10 +63,8 @@ router.post("/", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No accademy found" });
-        return;
       } else {
         let academy_id = result[0].id;
 
@@ -76,10 +72,8 @@ router.post("/", (req, res) => {
           if (err) {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
-            return;
           } else if (!result.length) {
             res.status(404).json({ message: "DB not correctly set" });
-            return;
           } else {
             let id = result[0].room_index + 1;
 
@@ -90,14 +84,12 @@ router.post("/", (req, res) => {
                 if (err) {
                   console.log("DB communication failed: ", err);
                   res.status(500).json({ message: "DB communication failed" });
-                  return;
                 } else {
                   // Update stu_index
                   con.query("UPDATE db_config SET room_index=?", id, function (err, result) {
                     if (err) {
                       console.log("DB communication failed: ", err);
                       res.status(500).json({ message: "DB communication failed" });
-                      return;
                     } else {
                       res.json({
                         ok: true,
@@ -116,8 +108,8 @@ router.post("/", (req, res) => {
           }
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 

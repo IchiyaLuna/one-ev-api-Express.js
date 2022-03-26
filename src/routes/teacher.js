@@ -17,20 +17,16 @@ router.get("/", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No accademy found" });
-        return;
       } else {
         let academy_id = result[0].id;
         con.query("SELECT * FROM teacher WHERE academy_id=?", [academy_id], function (err, result) {
           if (err) {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
-            return;
           } else if (!result.length) {
             res.status(404).json({ message: "No student found" });
-            return;
           } else {
             const data = [];
 
@@ -48,8 +44,8 @@ router.get("/", (req, res) => {
           }
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 
@@ -62,20 +58,16 @@ router.get("/search", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No accademy found" });
-        return;
       } else {
         let academy_id = result[0].id;
         con.query("SELECT * FROM teacher WHERE academy_id=? AND id=?", [academy_id, id], function (err, result) {
           if (err) {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
-            return;
           } else if (!result.length) {
             res.status(404).json({ message: "No student found" });
-            return;
           } else {
             const data = [];
 
@@ -93,8 +85,8 @@ router.get("/search", (req, res) => {
           }
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 

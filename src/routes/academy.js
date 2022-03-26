@@ -14,10 +14,8 @@ router.get("/", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No accademy found" });
-        return;
       } else {
         res.json({
           ok: true,
@@ -27,8 +25,8 @@ router.get("/", (req, res) => {
           address: result[0].address,
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 
@@ -43,10 +41,8 @@ router.post("/create", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "DB not correctly set" });
-        return;
       } else {
         let id = result[0].academy_index + 1;
         con.query(
@@ -56,13 +52,11 @@ router.post("/create", (req, res) => {
             if (err) {
               console.log("DB communication failed: ", err);
               res.status(500).json({ message: "DB communication failed" });
-              return;
             } else {
               con.query("UPDATE db_config SET academy_index=?", id, function (err, result) {
                 if (err) {
                   console.log("DB communication failed: ", err);
                   res.status(500).json({ message: "DB communication failed" });
-                  return;
                 } else {
                   res.json({
                     ok: true,
@@ -81,8 +75,8 @@ router.post("/create", (req, res) => {
           }
         );
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 
@@ -106,8 +100,8 @@ router.get("/code/check", (req, res) => {
           message: "Code already in use",
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 

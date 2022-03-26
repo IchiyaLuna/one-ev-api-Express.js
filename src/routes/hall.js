@@ -17,10 +17,8 @@ router.get("/", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No accademy found" });
-        return;
       } else {
         let academy_id = result[0].id;
         dbModule.open(pool, (con) => {
@@ -46,11 +44,10 @@ router.get("/", (req, res) => {
               });
             }
           });
-          dbModule.close(con);
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 
@@ -65,10 +62,8 @@ router.post("/", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No accademy found" });
-        return;
       } else {
         let academy_id = result[0].id;
         // Get cur stu_index
@@ -76,10 +71,8 @@ router.post("/", (req, res) => {
           if (err) {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
-            return;
           } else if (!result.length) {
             res.status(404).json({ message: "DB not correctly set" });
-            return;
           } else {
             let id = result[0].hall_index + 1;
             // Insert stu
@@ -87,14 +80,12 @@ router.post("/", (req, res) => {
               if (err) {
                 console.log("DB communication failed: ", err);
                 res.status(500).json({ message: "DB communication failed" });
-                return;
               } else {
                 // Update stu_index
                 con.query("UPDATE db_config SET hall_index=?", id, function (err, result) {
                   if (err) {
                     console.log("DB communication failed: ", err);
                     res.status(500).json({ message: "DB communication failed" });
-                    return;
                   } else {
                     res.json({
                       ok: true,
@@ -112,8 +103,8 @@ router.post("/", (req, res) => {
           }
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 

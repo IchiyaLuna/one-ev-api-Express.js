@@ -19,10 +19,8 @@ router.get("/", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (!result.length) {
         res.status(404).json({ message: "No account found" });
-        return;
       } else {
         hash = crypto
           .createHash("sha512")
@@ -33,10 +31,8 @@ router.get("/", (req, res) => {
           if (err) {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
-            return;
           } else if (!result.length) {
             res.status(404).json({ message: "No account found" });
-            return;
           } else {
             res.json({
               ok: true,
@@ -45,12 +41,11 @@ router.get("/", (req, res) => {
                 key_length: result[0].api_key.length.toString(),
               },
             });
-            return;
           }
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 
@@ -63,10 +58,8 @@ router.post("/register", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (result.length) {
         res.status(409).json({ message: "Already exist" });
-        return;
       } else {
         const salt = crypto.createHash("sha512").update(crypto.randomBytes(20).toString("base64")).digest("hex");
 
@@ -81,14 +74,12 @@ router.post("/register", (req, res) => {
           if (err) {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
-            return;
           } else if (result.length) api_key = crypto.createHash("sha512").update(crypto.randomBytes(20).toString("base64")).digest("hex").slice(-32);
 
           con.query("INSERT INTO token (id, api_key, hash, salt) VALUES (?, ?, ?, ?)", [id, api_key, hash, salt], function (err, result) {
             if (err) {
               console.log("DB communication failed: ", err);
               res.status(500).json({ message: "DB communication failed" });
-              return;
             } else {
               res.json({
                 ok: true,
@@ -102,13 +93,12 @@ router.post("/register", (req, res) => {
                   salt: salt,
                 },
               });
-              return;
             }
           });
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 
@@ -121,10 +111,8 @@ router.delete("/delete", (req, res) => {
       if (err) {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
-        return;
       } else if (result.length) {
         res.status(409).json({ message: "Already exist" });
-        return;
       } else {
         const salt = crypto.createHash("sha512").update(crypto.randomBytes(20).toString("base64")).digest("hex");
 
@@ -139,14 +127,12 @@ router.delete("/delete", (req, res) => {
           if (err) {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
-            return;
           } else if (result.length) api_key = crypto.createHash("sha512").update(crypto.randomBytes(20).toString("base64")).digest("hex").slice(-32);
 
           con.query("INSERT INTO token (id, api_key, hash, salt) VALUES (?, ?, ?, ?)", [id, api_key, hash, salt], function (err, result) {
             if (err) {
               console.log("DB communication failed: ", err);
               res.status(500).json({ message: "DB communication failed" });
-              return;
             } else {
               res.json({
                 ok: true,
@@ -160,13 +146,12 @@ router.delete("/delete", (req, res) => {
                   salt: salt,
                 },
               });
-              return;
             }
           });
         });
       }
+      dbModule.close(con);
     });
-    dbModule.close(con);
   });
 });
 
