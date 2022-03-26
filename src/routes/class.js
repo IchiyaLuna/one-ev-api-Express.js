@@ -9,6 +9,50 @@ const crypto = require("crypto");
 const dbModule = require("../db");
 const pool = dbModule.init();
 
+router.get("/", (req, res) => {
+  const api_key = req.query.key;
+
+  dbModule.open(pool, (con) => {
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+      } else if (!result.length) {
+        res.status(404).json({ message: "No accademy found" });
+      } else {
+        let academy_id = result[0].id;
+        con.query("SELECT * FROM class WHERE academy_id=?", [academy_id], function (err, result) {
+          if (err) {
+            console.log("DB communication failed: ", err);
+            res.status(500).json({ message: "DB communication failed" });
+          } else if (!result.length) {
+            res.status(404).json({ message: "No class found" });
+          } else {
+            const data = [];
+
+            for (const classData of result) {
+              data.push({
+                id: classData.id,
+                room_id: classData.room_id,
+                name: classData.name,
+                subject_id: classData.subject_id,
+                teacher_id: classData.teacher_id,
+                full_student: classData.full_student,
+                time: classData.time,
+              });
+            }
+
+            res.json({
+              ok: true,
+              class: data,
+            });
+          }
+        });
+      }
+    });
+  });
+});
+
 router.post("/", (req, res) => {
   const api_key = req.query.key;
   const room_id = req.query.room_id;
@@ -18,7 +62,6 @@ router.post("/", (req, res) => {
   const full_student = req.query.full_student;
   const time = req.query.time;
 
-  console.log(api_key);
   dbModule.open(pool, (con) => {
     // Get aca id
     con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
