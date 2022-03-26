@@ -102,11 +102,11 @@ router.post("/", (req, res) => {
                         message: "",
                         student: {
                           id: id,
-                          academy_id: academy_id,
                           name: name,
                           gender: gender,
                           student_phone: studentPhone,
                           parent_phone: parentPhone,
+                          school: school,
                           last_consult: lastConsult,
                         },
                       });
