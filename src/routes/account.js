@@ -44,7 +44,6 @@ router.get("/", (req, res) => {
           }
         });
       }
-      dbModule.close(con);
     });
   });
 });
@@ -97,7 +96,6 @@ router.post("/register", (req, res) => {
           });
         });
       }
-      dbModule.close(con);
     });
   });
 });
@@ -150,7 +148,6 @@ router.delete("/delete", (req, res) => {
           });
         });
       }
-      dbModule.close(con);
     });
   });
 });

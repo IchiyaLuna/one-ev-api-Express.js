@@ -73,7 +73,6 @@ router.post("/", (req, res) => {
               }
             );
           }
-          dbModule.close(con);
         });
       }
     });
@@ -120,7 +119,6 @@ router.get("/subject", (req, res) => {
           }
         });
       }
-      dbModule.close(con);
     });
   });
 });

@@ -25,7 +25,6 @@ router.get("/", (req, res) => {
           address: result[0].address,
         });
       }
-      dbModule.close(con);
     });
   });
 });
@@ -75,7 +74,6 @@ router.post("/create", (req, res) => {
           }
         );
       }
-      dbModule.close(con);
     });
   });
 });
@@ -100,7 +98,6 @@ router.get("/code/check", (req, res) => {
           message: "Code already in use",
         });
       }
-      dbModule.close(con);
     });
   });
 });

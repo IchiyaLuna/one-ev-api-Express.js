@@ -49,7 +49,6 @@ router.get("/", (req, res) => {
           }
         });
       }
-      dbModule.close(con);
     });
   });
 });
@@ -117,7 +116,6 @@ router.post("/", (req, res) => {
               }
             );
           }
-          dbModule.close(con);
         });
       }
     });
@@ -168,7 +166,6 @@ router.put("/", (req, res) => {
           }
         );
       }
-      dbModule.close(con);
     });
   });
 });
@@ -198,7 +195,6 @@ router.delete("/", (req, res) => {
           }
         });
       }
-      dbModule.close(con);
     });
   });
 });

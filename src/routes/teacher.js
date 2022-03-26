@@ -44,7 +44,6 @@ router.get("/", (req, res) => {
           }
         });
       }
-      dbModule.close(con);
     });
   });
 });
@@ -85,7 +84,6 @@ router.get("/search", (req, res) => {
           }
         });
       }
-      dbModule.close(con);
     });
   });
 });

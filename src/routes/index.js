@@ -18,7 +18,6 @@ router.get("/", (req, res) => {
           message: "DB connection OK",
         });
       }
-      dbModule.close(con);
     });
   });
 });
