@@ -8,6 +8,7 @@ const accountRouter = require("./routes/account");
 const academyRouter = require("./routes/academy");
 const hallRouter = require("./routes/hall");
 const studentRouter = require("./routes/student");
+const subjectRouter = require("./routes/subject");
 
 //cors
 const cors = require("cors");
@@ -26,5 +27,6 @@ app.use("/account", accountRouter);
 app.use("/academy", academyRouter);
 app.use("/hall", hallRouter);
 app.use("/student", studentRouter);
+app.use("/subject", subjectRouter);
 
 app.listen(3000, () => console.log("IL!"));
