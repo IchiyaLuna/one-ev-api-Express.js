@@ -43,7 +43,7 @@ router.get("/", (req, res) => {
 
             res.json({
               ok: true,
-              student: data,
+              teacher: data,
             });
           }
         });
@@ -87,7 +87,7 @@ router.get("/search", (req, res) => {
 
             res.json({
               ok: true,
-              student: data,
+              teacher: data,
             });
           }
         });
