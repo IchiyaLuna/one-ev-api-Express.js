@@ -38,8 +38,10 @@ router.get("/", (req, res) => {
               data.push({
                 id: student.id,
                 name: student.name,
-                phone: student.phone,
-                lastConsult: student.last_consult,
+                gender: student.gender,
+                student_phone: student.student_phone,
+                parent_phone: student.parent_phone,
+                last_consult: student.last_consult,
               });
             }
 
@@ -57,8 +59,10 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const api_key = req.query.key;
   const name = req.query.name;
-  const phone = req.query.phone;
-  const lastConsult = req.query.lastConsult;
+  const gender = req.query.gender;
+  const studentPhone = req.query.student_phone;
+  const parentPhone = req.query.parent_phone;
+  const lastConsult = req.query.last_consult;
 
   dbModule.open(pool, (con) => {
     // Get aca id
@@ -85,8 +89,8 @@ router.post("/", (req, res) => {
             let id = result[0].student_index + 1;
             // Insert stu
             con.query(
-              "INSERT INTO student (id, academy_id, name, phone, last_consult) VALUES(?, ?, ?, ?, ?)",
-              [id, academy_id, name, phone, lastConsult],
+              "INSERT INTO student (id, academy_id, name, gender, student_phone, parent_phone, last_consult) VALUES(?, ?, ?, ?, ?, ?, ?)",
+              [id, academy_id, name, gender, studentPhone, parentPhone, lastConsult],
               function (err, result) {
                 if (err) {
                   console.log("DB communication failed: ", err);
@@ -105,10 +109,12 @@ router.post("/", (req, res) => {
                         message: "",
                         data: {
                           id: id,
-                          academyId: academy_id,
+                          academy_id: academy_id,
                           name: name,
-                          phone: phone,
-                          lastConsult: lastConsult,
+                          gender: gender,
+                          student_phone: studentPhone,
+                          parent_phone: parentPhone,
+                          last_consult: lastConsult,
                         },
                       });
                     }
