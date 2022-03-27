@@ -41,6 +41,7 @@ router.get("/", (req, res) => {
                 full_student: classData.full_student,
                 time: classData.time,
               });
+              console.log(classData.time);
               console.log(JSON.parse(classData.time));
             }
 
