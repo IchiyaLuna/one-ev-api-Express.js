@@ -2,9 +2,6 @@
 const express = require("express");
 const router = express.Router();
 
-//node module
-const crypto = require("crypto");
-
 //db module
 const dbModule = require("../db");
 const pool = dbModule.init();

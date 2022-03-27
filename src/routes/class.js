@@ -2,9 +2,6 @@
 const express = require("express");
 const router = express.Router();
 
-//node module
-const crypto = require("crypto");
-
 //db module
 const dbModule = require("../db");
 const { time } = require("console");
@@ -39,7 +36,6 @@ router.get("/", (req, res) => {
                 subject_id: classData.subject_id,
                 teacher_id: classData.teacher_id,
                 full_student: classData.full_student,
-                time: JSON.parse(classData.time),
               });
             }
 
@@ -61,16 +57,6 @@ router.post("/", (req, res) => {
   const subject_id = req.query.subject_id;
   const teacher_id = req.query.teacher_id;
   const full_student = req.query.full_student;
-  const time = JSON.stringify([
-    {
-      weekday: 1,
-      time: 2,
-    },
-    {
-      weekday: 3,
-      time: 1,
-    },
-  ]);
 
   dbModule.open(pool, (con) => {
     // Get aca id
@@ -93,8 +79,8 @@ router.post("/", (req, res) => {
             let id = result[0].class_index + 1;
             // Insert stu
             con.query(
-              "INSERT INTO class (id, academy_id, room_id, name, subject_id, teacher_id, full_student, time) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
-              [id, academy_id, room_id, name, subject_id, teacher_id, full_student, time],
+              "INSERT INTO class (id, academy_id, room_id, name, subject_id, teacher_id, full_student) VALUES(?, ?, ?, ?, ?, ?, ?)",
+              [id, academy_id, room_id, name, subject_id, teacher_id, full_student],
               function (err, result) {
                 if (err) {
                   console.log("DB communication failed: ", err);
@@ -117,7 +103,6 @@ router.post("/", (req, res) => {
                           subject_id: subject_id,
                           teacher_id: teacher_id,
                           full_student: full_student,
-                          time: time,
                         },
                       });
                     }
