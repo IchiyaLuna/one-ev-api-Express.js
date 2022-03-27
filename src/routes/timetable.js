@@ -144,7 +144,6 @@ router.put("/", (req, res) => {
                   weekday: weekday,
                   time: time,
                   room_id: room_id,
-                  class_id: class_id,
                 },
               });
             }
