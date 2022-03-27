@@ -30,7 +30,7 @@ router.get("/", (req, res) => {
             res.status(404).json({ message: "No class found" });
           } else {
             const data = [];
-
+            console.log(JSON.parse(result[0].time));
             for (const classData of result) {
               data.push({
                 id: classData.id,
