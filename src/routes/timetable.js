@@ -115,9 +115,9 @@ router.post("/", (req, res) => {
 router.put("/", (req, res) => {
   const api_key = req.query.key;
   const id = req.query.id;
-  const weekday = req.query.name;
-  const time = req.query.gender;
-  const room_id = req.query.student_phone;
+  const weekday = req.query.weekday;
+  const time = req.query.time;
+  const room_id = req.query.room_id;
 
   dbModule.open(pool, (con) => {
     con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
