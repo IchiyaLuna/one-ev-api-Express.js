@@ -61,7 +61,7 @@ router.post("/", (req, res) => {
   const subject_id = req.query.subject_id;
   const teacher_id = req.query.teacher_id;
   const full_student = req.query.full_student;
-  const time = [
+  const time = JSON.stringify([
     {
       weekday: 1,
       time: 2,
@@ -70,7 +70,7 @@ router.post("/", (req, res) => {
       weekday: 3,
       time: 1,
     },
-  ];
+  ]);
 
   dbModule.open(pool, (con) => {
     // Get aca id
