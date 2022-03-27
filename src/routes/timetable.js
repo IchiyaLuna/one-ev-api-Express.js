@@ -32,7 +32,7 @@ router.get("/", (req, res) => {
                 data.push({
                   id: timetable.id,
                   weekday: timetable.weekday,
-                  day: timetable.day,
+                  time: timetable.time,
                   room_id: timetable.room_id,
                   class_id: timetable.class_id,
                 });
