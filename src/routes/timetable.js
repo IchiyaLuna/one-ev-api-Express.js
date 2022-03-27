@@ -112,4 +112,47 @@ router.post("/", (req, res) => {
   });
 });
 
+router.put("/", (req, res) => {
+  const api_key = req.query.key;
+  const id = req.query.id;
+  const weekday = req.query.name;
+  const time = req.query.gender;
+  const room_id = req.query.student_phone;
+
+  dbModule.open(pool, (con) => {
+    con.query("SELECT id FROM academy WHERE api_key=?", [api_key], function (err, result) {
+      if (err) {
+        console.log("DB communication failed: ", err);
+        res.status(500).json({ message: "DB communication failed" });
+      } else if (!result.length) {
+        res.status(204).json({ message: "No accademy found" });
+      } else {
+        let academy_id = result[0].id;
+        con.query(
+          "UPDATE timetable SET weekday=?, time=?, room_id=? WHERE academy_id=? AND id=?",
+          [weekday, time, room_id, academy_id, id],
+          function (err, result) {
+            if (err) {
+              console.log("DB communication failed: ", err);
+              res.status(500).json({ message: "DB communication failed" });
+            } else {
+              res.json({
+                ok: true,
+                message: "Timetable updated",
+                timetable: {
+                  id: id,
+                  weekday: weekday,
+                  time: time,
+                  room_id: room_id,
+                  class_id: class_id,
+                },
+              });
+            }
+          }
+        );
+      }
+    });
+  });
+});
+
 module.exports = router;
