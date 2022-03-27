@@ -20,7 +20,7 @@ router.get("/", (req, res) => {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
       } else if (!result.length) {
-        res.status(404).json({ message: "No account found" });
+        res.status(204).json({ message: "No account found" });
       } else {
         hash = crypto
           .createHash("sha512")
@@ -32,7 +32,7 @@ router.get("/", (req, res) => {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
           } else if (!result.length) {
-            res.status(404).json({ message: "No account found" });
+            res.status(204).json({ message: "No account found" });
           } else {
             res.json({
               ok: true,

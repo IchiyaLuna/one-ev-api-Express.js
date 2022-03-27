@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
       } else if (!result.length) {
-        res.status(404).json({ message: "No accademy found" });
+        res.status(204).json({ message: "No accademy found" });
       } else {
         let academy_id = result[0].id;
         dbModule.open(pool, (con) => {
@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
               console.log("DB communication failed: ", err);
               res.status(500).json({ message: "DB communication failed" });
             } else if (!result.length) {
-              res.status(404).json({ message: "No timetable data found" });
+              res.status(204).json({ message: "No timetable data found" });
             } else {
               const data = [];
 

@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
       } else if (!result.length) {
-        res.status(404).json({ message: "No accademy found" });
+        res.status(204).json({ message: "No accademy found" });
       } else {
         let academy_id = result[0].id;
         dbModule.open(pool, (con) => {
@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
               console.log("DB communication failed: ", err);
               res.status(500).json({ message: "DB communication failed" });
             } else if (!result.length) {
-              res.status(404).json({ message: "No room data found" });
+              res.status(204).json({ message: "No room data found" });
             } else {
               const data = [];
 
@@ -60,7 +60,7 @@ router.post("/", (req, res) => {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
       } else if (!result.length) {
-        res.status(404).json({ message: "No accademy found" });
+        res.status(204).json({ message: "No accademy found" });
       } else {
         let academy_id = result[0].id;
 
@@ -69,7 +69,7 @@ router.post("/", (req, res) => {
             console.log("DB communication failed: ", err);
             res.status(500).json({ message: "DB communication failed" });
           } else if (!result.length) {
-            res.status(404).json({ message: "DB not correctly set" });
+            res.status(204).json({ message: "DB not correctly set" });
           } else {
             let id = result[0].room_index + 1;
 
@@ -118,7 +118,7 @@ router.get("/hall", (req, res) => {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
       } else if (!result.length) {
-        res.status(404).json({ message: "No accademy found" });
+        res.status(204).json({ message: "No accademy found" });
       } else {
         let academy_id = result[0].id;
         dbModule.open(pool, (con) => {
@@ -127,7 +127,7 @@ router.get("/hall", (req, res) => {
               console.log("DB communication failed: ", err);
               res.status(500).json({ message: "DB communication failed" });
             } else if (!result.length) {
-              res.status(404).json({ message: "No room data found" });
+              res.status(204).json({ message: "No room data found" });
             } else {
               const data = [];
 

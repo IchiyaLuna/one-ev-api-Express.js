@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
       } else if (!result.length) {
-        res.status(404).json({ message: "No accademy found" });
+        res.status(204).json({ message: "No accademy found" });
       } else {
         res.json({
           ok: true,
@@ -41,7 +41,7 @@ router.post("/create", (req, res) => {
         console.log("DB communication failed: ", err);
         res.status(500).json({ message: "DB communication failed" });
       } else if (!result.length) {
-        res.status(404).json({ message: "DB not correctly set" });
+        res.status(204).json({ message: "DB not correctly set" });
       } else {
         let id = result[0].academy_index + 1;
         con.query(
