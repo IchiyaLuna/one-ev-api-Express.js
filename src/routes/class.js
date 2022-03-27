@@ -7,6 +7,7 @@ const crypto = require("crypto");
 
 //db module
 const dbModule = require("../db");
+const { time } = require("console");
 const pool = dbModule.init();
 
 router.get("/", (req, res) => {
@@ -60,7 +61,16 @@ router.post("/", (req, res) => {
   const subject_id = req.query.subject_id;
   const teacher_id = req.query.teacher_id;
   const full_student = req.query.full_student;
-  const time = req.query.time;
+  const time = [
+    {
+      weekday: 1,
+      time: 2,
+    },
+    {
+      weekday: 3,
+      time: 1,
+    },
+  ];
 
   dbModule.open(pool, (con) => {
     // Get aca id
