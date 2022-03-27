@@ -12,6 +12,7 @@ const roomRouter = require("./routes/room");
 const studentRouter = require("./routes/student");
 const subjectRouter = require("./routes/subject");
 const teacherRouter = require("./routes/teacher");
+const timetableRouter = require("./routes/timetable");
 
 //cors
 const cors = require("cors");
@@ -34,5 +35,6 @@ app.use("/room", roomRouter);
 app.use("/student", studentRouter);
 app.use("/subject", subjectRouter);
 app.use("/teacher", teacherRouter);
+app.use("/timetable", timetableRouter);
 
 app.listen(3000, () => console.log("IL!"));
